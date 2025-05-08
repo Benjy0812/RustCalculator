@@ -1,6 +1,6 @@
-#![allow(unused)]//disables unused warnings
-//src\main.rs
-//modules
+#![allow(unused)] //disables unused warnings
+                  //src\main.rs
+                  //modules
 use std::io; // Import the io module for user input
 
 fn read_number(prompt: &str) -> f64 {
