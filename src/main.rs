@@ -1,16 +1,17 @@
-#![allow(unused)] //disables unused warnings
-                  //src\main.rs
-                  //modules
-use std::io; // Import the io module for user input
+use std::io::{self, Write}; // import io and flush for nicer prompts
 
+// Reads a number from the user
 fn read_number(prompt: &str) -> f64 {
     loop {
-        println!("{}", prompt);
+        print!("{} ", prompt);
+        io::stdout().flush().unwrap(); // ensures prompt appears before input
+
         let mut input = String::new();
         if io::stdin().read_line(&mut input).is_err() {
             println!("Error: Failed to read input.");
             continue;
         }
+
         match input.trim().parse() {
             Ok(num) => return num,
             Err(_) => println!("Error: Please enter a valid number!"),
@@ -18,50 +19,68 @@ fn read_number(prompt: &str) -> f64 {
     }
 }
 
-fn main() {
+// Reads an operator from the user
+fn read_operator() -> String {
     loop {
-        // Read the first and second numbers
-        let num1 = read_number("Enter the first number:");
-        let num2 = read_number("Enter the second number:");
+        print!("Enter the operator (+, -, *, /): ");
+        io::stdout().flush().unwrap();
 
-        // Ask the user to select an operator
-        println!("Enter the operator (+, -, *, /):");
         let mut operator = String::new();
         if io::stdin().read_line(&mut operator).is_err() {
             println!("Error: Failed to read input.");
             continue;
         }
-        let operator = operator.trim();
 
-        // Perform the calculation
-        let result = match operator {
-            "+" => num1 + num2,
-            "-" => num1 - num2,
-            "*" => num1 * num2,
-            "/" => {
-                if num2 == 0.0 {
-                    println!("Error: Division by zero is not allowed.");
-                    continue;
-                }
-                num1 / num2
+        let op = operator.trim();
+        if ["+", "-", "*", "/"].contains(&op) {
+            return op.to_string();
+        } else {
+            println!("Invalid operator. Please use one of +, -, *, /.");
+        }
+    }
+}
+
+// Performs the calculation
+fn calculate(num1: f64, num2: f64, operator: &str) -> Option<f64> {
+    match operator {
+        "+" => Some(num1 + num2),
+        "-" => Some(num1 - num2),
+        "*" => Some(num1 * num2),
+        "/" => {
+            if num2 == 0.0 {
+                println!("Error: Division by zero is not allowed.");
+                None
+            } else {
+                Some(num1 / num2)
             }
-            _ => {
-                println!("Invalid operator. Please use one of +, -, *, /.");
-                continue;
-            }
-        };
+        }
+        _ => None, // shouldn't happen because we validate operator
+    }
+}
 
-        // Display the result
-        println!("Result: {}", result);
+fn main() {
+    loop {
+        let num1 = read_number("Enter the first number:");
+        let num2 = read_number("Enter the second number:");
+        let operator = read_operator();
 
-        // Ask the user if they want to continue
-        println!("Do you want to continue? (y/n):");
+        if let Some(result) = calculate(num1, num2, &operator) {
+            println!("======================");
+            println!("Result: {}", result);
+            println!("======================");
+        }
+
+        print!("Do you want to continue? (yes/no): ");
+        io::stdout().flush().unwrap();
+
         let mut continue_input = String::new();
         if io::stdin().read_line(&mut continue_input).is_err() {
             println!("Error: Failed to read input.");
             continue;
         }
-        if continue_input.trim().eq_ignore_ascii_case("n") {
+
+        if continue_input.trim().eq_ignore_ascii_case("no") {
+            println!("Goodbye!");
             break;
         }
     }
