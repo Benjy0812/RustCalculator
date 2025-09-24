@@ -1,10 +1,15 @@
-use std::io::{self, Write}; // import io and flush for nicer prompts
+use std::io::{self, Write}; 
+// Import Rust's input/output library
+// `Write` allows us to flush output, so prompts show immediately
 
-// Reads a number from the user
+// ============================================================
+// Function: read_number
+// Purpose: Continuously ask for a number until the user enters a valid one
+// ============================================================
 fn read_number(prompt: &str) -> f64 {
     loop {
         print!("{} ", prompt);
-        io::stdout().flush().unwrap(); // ensures prompt appears before input
+        io::stdout().flush().unwrap(); // ensures prompt is displayed before input
 
         let mut input = String::new();
         if io::stdin().read_line(&mut input).is_err() {
@@ -13,13 +18,16 @@ fn read_number(prompt: &str) -> f64 {
         }
 
         match input.trim().parse() {
-            Ok(num) => return num,
+            Ok(num) => return num, // valid number, return it
             Err(_) => println!("Error: Please enter a valid number!"),
         }
     }
 }
 
-// Reads an operator from the user
+// ============================================================
+// Function: read_operator
+// Purpose: Continuously ask for an operator until valid (+, -, *, /)
+// ============================================================
 fn read_operator() -> String {
     loop {
         print!("Enter the operator (+, -, *, /): ");
@@ -40,7 +48,10 @@ fn read_operator() -> String {
     }
 }
 
-// Performs the calculation
+// ============================================================
+// Function: calculate
+// Purpose: Perform math based on operator and return result
+// ============================================================
 fn calculate(num1: f64, num2: f64, operator: &str) -> Option<f64> {
     match operator {
         "+" => Some(num1 + num2),
@@ -54,10 +65,13 @@ fn calculate(num1: f64, num2: f64, operator: &str) -> Option<f64> {
                 Some(num1 / num2)
             }
         }
-        _ => None, // shouldn't happen because we validate operator
+        _ => None, // should never happen
     }
 }
 
+// ============================================================
+// MAIN PROGRAM
+// ============================================================
 fn main() {
     loop {
         let num1 = read_number("Enter the first number:");
@@ -65,12 +79,12 @@ fn main() {
         let operator = read_operator();
 
         if let Some(result) = calculate(num1, num2, &operator) {
-            println!("======================");
+            println!("===================== Result =====================");
             println!("Result: {}", result);
-            println!("======================");
+            println!("==================================================");
         }
 
-        print!("Do you want to continue? (yes/no): ");
+        print!("Do you want to continue? (yes/y or no/n): ");
         io::stdout().flush().unwrap();
 
         let mut continue_input = String::new();
@@ -79,8 +93,9 @@ fn main() {
             continue;
         }
 
-        if continue_input.trim().eq_ignore_ascii_case("no") {
-            println!("Goodbye!");
+        let answer = continue_input.trim().to_lowercase();
+        if answer == "n" || answer == "no" {
+            println!("===================== Goodbye! ===================");
             break;
         }
     }
