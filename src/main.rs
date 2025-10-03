@@ -22,12 +22,18 @@ fn calculate(a: f64, b: f64, choice: &str) -> f64 {
 
 // Helper to read a number
 fn read_number(prompt: &str) -> f64 {
-    print!("{prompt}");
-    io::stdout().flush().unwrap();
+    loop {
+        print!("{prompt}");
+        io::stdout().flush().unwrap();
 
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    input.trim().parse().unwrap()
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+        
+        match input.trim().parse::<f64>() { // try to parse input as f64
+            Ok(num) => return num, // if valid number return it
+            Err(_) => println!("\nThat's not a valid number. Try again!"), // if not a valid number prompt again
+        }
+    }
 }
 
 // Helper to read operation
@@ -51,6 +57,7 @@ fn main() {
         
         let again = read_choice("Do you want to perform another calculation? (yes/no): ");
         if again.to_lowercase() != "yes" {
+            println!("\nGoodbye!\n");
             break;
         }
     }
