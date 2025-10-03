@@ -41,10 +41,17 @@ fn read_choice(prompt: &str) -> String {
 }
 
 fn main() {
-    let a = read_number("\nEnter first number: ");
-    let b = read_number("\nEnter second number: ");
-    let choice = read_choice("\nEnter operation (add, subtract, multiply, divide): ");
+    loop {
+        let a = read_number("\nEnter first number: ");
+        let b = read_number("\nEnter second number: ");
+        let choice = read_choice("\nEnter operation (add, subtract, multiply, divide): ");
 
-    let result = calculate(a, b, &choice);
-    println!("\nResult: {}\n", result);
+        let result = calculate(a, b, &choice);
+        println!("\nResult: {}\n", result);
+        
+        let again = read_choice("Do you want to perform another calculation? (yes/no): ");
+        if again.to_lowercase() != "yes" {
+            break;
+        }
+    }
 }
