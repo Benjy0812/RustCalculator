@@ -4,14 +4,16 @@ use std::io::{self, Write};
 fn read_number(prompt: &str) -> f64 {
     loop {
         print!("{prompt}");
-        io::stdout().flush().unwrap();
+        io::stdout().flush().expect("Failed to flush stdout");
 
         let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
-        
-        match input.trim().parse::<f64>() { // try to parse input as f64
-            Ok(num) => return num, // if valid number return it
-            Err(_) => println!("\nThat's not a valid number. Try again!"), // if not a valid number prompt again
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+
+        match input.trim().parse::<f64>() {
+            Ok(num) => return num,
+            Err(_) => println!("\nThat's not a valid number. Try again!"),
         }
     }
 }
@@ -20,10 +22,12 @@ fn read_number(prompt: &str) -> f64 {
 fn read_choice(prompt: &str) -> String {
     loop {
         print!("{}", prompt);
-        io::stdout().flush().unwrap();
+        io::stdout().flush().expect("Failed to flush stdout");
 
         let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
 
         let input = input.trim().to_lowercase();
 
@@ -34,22 +38,23 @@ fn read_choice(prompt: &str) -> String {
     }
 }
 
-fn calculate(a: f64, b: f64, choice: &str) -> f64 {
+// Now returns Option<f64>
+fn calculate(a: f64, b: f64, choice: &str) -> Option<f64> {
     match choice {
-        "add" => a + b,
-        "subtract" => a - b,
-        "multiply" => a * b,
+        "add" => Some(a + b),
+        "subtract" => Some(a - b),
+        "multiply" => Some(a * b),
         "divide" => {
             if b == 0.0 {
-                println!("\nError: Division by zero");
-                0.0
+                println!("\nError: Division by zero! Let's try again.\n");
+                None
             } else {
-                a / b
+                Some(a / b)
             }
         }
         _ => {
             println!("Invalid operation");
-            0.0
+            None
         }
     }
 }
@@ -57,10 +62,14 @@ fn calculate(a: f64, b: f64, choice: &str) -> f64 {
 fn ask_again(prompt: &str) -> bool {
     loop {
         print!("{}", prompt);
-        io::stdout().flush().unwrap();
+        io::stdout()
+            .flush()
+            .expect("Failed to flush stdout");
 
         let mut input = String::new();
-        io::stdin().read_line(&mut input).unwrap();
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
 
         match input.trim().to_lowercase().as_str() {
             "yes" | "y" => return true,
@@ -70,18 +79,21 @@ fn ask_again(prompt: &str) -> bool {
     }
 }
 
-
 fn main() {
     loop {
-        let a = read_number("\nEnter first number: ");
-        let b = read_number("\nEnter second number: ");
-        let choice = read_choice("\nEnter operation (add, subtract, multiply, divide): ");
+        let result = loop {
+            let a = read_number("\nEnter first number: ");
+            let b = read_number("\nEnter second number: ");
+            let choice = read_choice("\nEnter operation (add, subtract, multiply, divide): ");
 
-        let result = calculate(a, b, &choice);
+            if let Some(res) = calculate(a, b, &choice) {
+                break res;
+            }
+        };
+
         println!("\nResult: {}\n", result);
-        
-        let again = ask_again("Do you want to perform another calculation? (yes/no): ");
-        if !again {
+
+        if !ask_again("Do you want to perform another calculation? (yes/no): ") {
             println!("\nGoodbye!\n");
             break;
         }
