@@ -38,13 +38,38 @@ fn read_number(prompt: &str) -> f64 {
 
 // Helper to read operation
 fn read_choice(prompt: &str) -> String {
-    print!("{prompt}");
-    io::stdout().flush().unwrap();
+    loop {
+        print!("{prompt}");
+        io::stdout().flush().unwrap();
 
-    let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
-    input.trim().to_string()
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+
+        let input = input.trim().to_lowercase();
+
+        match input.as_str() {
+            "add" | "subtract" | "multiply" | "divide" | "yes" | "no" => return input, // return valid input
+            _ => println!("\nInvalid operation! Please type one of: add, subtract, multiply, divide"),   // loop again for invalid input
+        }
+    }
 }
+
+fn ask_again(prompt: &str) -> bool {
+    loop {
+        print!("{prompt}");
+        io::stdout().flush().unwrap();
+
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).unwrap();
+
+        match input.trim().to_lowercase().as_str() {
+            "yes" | "y" => return true,
+            "no" | "n" => return false,
+            _ => println!("Please type yes or no."),
+        }
+    }
+}
+
 
 fn main() {
     loop {
@@ -55,8 +80,8 @@ fn main() {
         let result = calculate(a, b, &choice);
         println!("\nResult: {}\n", result);
         
-        let again = read_choice("Do you want to perform another calculation? (yes/no): ");
-        if again.to_lowercase() != "yes" {
+        let again = ask_again("Do you want to perform another calculation? (yes/no): ");
+        if !again {
             println!("\nGoodbye!\n");
             break;
         }
