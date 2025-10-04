@@ -1,25 +1,5 @@
 use std::io::{self, Write};
 
-fn calculate(a: f64, b: f64, choice: &str) -> f64 {
-    match choice {
-        "add" => a + b,
-        "subtract" => a - b,
-        "multiply" => a * b,
-        "divide" => {
-            if b == 0.0 {
-                println!("Error: Division by zero");
-                0.0
-            } else {
-                a / b
-            }
-        }
-        _ => {
-            println!("Invalid operation");
-            0.0
-        }
-    }
-}
-
 // Helper to read a number
 fn read_number(prompt: &str) -> f64 {
     loop {
@@ -50,6 +30,26 @@ fn read_choice(prompt: &str) -> String {
         match input.as_str() {
             "add" | "subtract" | "multiply" | "divide" => return input,
             _ => println!("Invalid operation! Please type one of: add, subtract, multiply, divide"),
+        }
+    }
+}
+
+fn calculate(a: f64, b: f64, choice: &str) -> f64 {
+    match choice {
+        "add" => a + b,
+        "subtract" => a - b,
+        "multiply" => a * b,
+        "divide" => {
+            if b == 0.0 {
+                println!("\nError: Division by zero");
+                0.0
+            } else {
+                a / b
+            }
+        }
+        _ => {
+            println!("Invalid operation");
+            0.0
         }
     }
 }
