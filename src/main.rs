@@ -56,7 +56,7 @@ fn read_choice(prompt: &str) -> String {
 
 fn ask_again(prompt: &str) -> bool {
     loop {
-        print!("{prompt}");
+        print!("{}", prompt);
         io::stdout().flush().unwrap();
 
         let mut input = String::new();
