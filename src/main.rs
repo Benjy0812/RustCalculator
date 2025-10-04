@@ -39,7 +39,7 @@ fn read_number(prompt: &str) -> f64 {
 // Helper to read operation
 fn read_choice(prompt: &str) -> String {
     loop {
-        print!("{prompt}");
+        print!("{}", prompt);
         io::stdout().flush().unwrap();
 
         let mut input = String::new();
@@ -48,8 +48,8 @@ fn read_choice(prompt: &str) -> String {
         let input = input.trim().to_lowercase();
 
         match input.as_str() {
-            "add" | "subtract" | "multiply" | "divide" | "yes" | "no" => return input, // return valid input
-            _ => println!("\nInvalid operation! Please type one of: add, subtract, multiply, divide"),   // loop again for invalid input
+            "add" | "subtract" | "multiply" | "divide" => return input,
+            _ => println!("Invalid operation! Please type one of: add, subtract, multiply, divide"),
         }
     }
 }
