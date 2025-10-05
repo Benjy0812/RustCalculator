@@ -1,9 +1,10 @@
+use colored::*;
 use std::io::{self, Write};
 
 // Helper to read a number
 fn read_number(prompt: &str) -> f64 {
     loop {
-        print!("{prompt}");
+        print!("{}", prompt.cyan());
         io::stdout().flush().expect("Failed to flush stdout");
 
         let mut input = String::new();
@@ -13,7 +14,7 @@ fn read_number(prompt: &str) -> f64 {
 
         match input.trim().parse::<f64>() {
             Ok(num) => return num,
-            Err(_) => println!("\nThat's not a valid number. Try again!"),
+            Err(_) => println!("{}", "\nThat's not a valid number. Try again!".red()),
         }
     }
 }
@@ -21,7 +22,7 @@ fn read_number(prompt: &str) -> f64 {
 // Helper to read operation
 fn read_choice(prompt: &str) -> String {
     loop {
-        print!("{}", prompt);
+        print!("{}", prompt.cyan());
         io::stdout().flush().expect("Failed to flush stdout");
 
         let mut input = String::new();
@@ -33,7 +34,7 @@ fn read_choice(prompt: &str) -> String {
 
         match input.as_str() {
             "add" | "subtract" | "multiply" | "divide" => return input,
-            _ => println!("Invalid operation! Please type one of: add, subtract, multiply, divide"),
+            _ => println!("{}", "Invalid operation! Please type one of: add, subtract, multiply, divide".red()),
         }
     }
 }
@@ -46,14 +47,14 @@ fn calculate(a: f64, b: f64, choice: &str) -> Option<f64> {
         "multiply" => Some(a * b),
         "divide" => {
             if b == 0.0 {
-                println!("\nError: Division by zero! Let's try again.\n");
+                println!("{}", "\nError: Division by zero! Let's try again.".red().bold());
                 None
             } else {
                 Some(a / b)
             }
         }
         _ => {
-            println!("Invalid operation");
+            println!("{}", "Invalid operation".red());
             None
         }
     }
@@ -61,7 +62,7 @@ fn calculate(a: f64, b: f64, choice: &str) -> Option<f64> {
 
 fn ask_again(prompt: &str) -> bool {
     loop {
-        print!("{}", prompt);
+        print!("{}", prompt.yellow());
         io::stdout()
             .flush()
             .expect("Failed to flush stdout");
@@ -74,12 +75,14 @@ fn ask_again(prompt: &str) -> bool {
         match input.trim().to_lowercase().as_str() {
             "yes" | "y" => return true,
             "no" | "n" => return false,
-            _ => println!("Please type yes or no."),
+            _ => println!("{}", "Please type yes or no.".red()),
         }
     }
 }
 
 fn main() {
+    println!("{}\n", "Welcome to Calculator!".bright_blue().bold());
+    
     loop {
         let result = loop {
             let a = read_number("\nEnter first number: ");
@@ -91,10 +94,10 @@ fn main() {
             }
         };
 
-        println!("\nResult: {}\n", result);
+        println!("\n{} {}\n", "Result:".green().bold(), result.to_string().bright_green());
 
         if !ask_again("Do you want to perform another calculation? (yes/no): ") {
-            println!("\nGoodbye!\n");
+            println!("{}", "\nGoodbye!\n".bright_blue());
             break;
         }
     }
