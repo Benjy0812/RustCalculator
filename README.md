@@ -23,18 +23,22 @@ A beautiful, interactive command-line calculator built with Rust. Features color
 
 ### Installation
 
+#### Option 1: Download Pre-built Executable (Windows)
+
+1. Download `Calculator.exe` from the [Releases](https://github.com/yourusername/rust-calculator/releases) page
+2. Run the executable
+
+**Note:** Windows will show a security warning because the executable is not digitally signed. This is normal for open-source projects. Click "More info" and then "Run anyway" to proceed.
+
+#### Option 2: Build from Source
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/rust-calculator.git
 cd rust-calculator
 ```
 
-2. Build the project:
-```bash
-cargo build --release
-```
-
-3. Run the calculator:
+2. Run the calculator:
 ```bash
 cargo run --release
 ```
@@ -90,16 +94,18 @@ Goodbye!
 
 This project uses the following crates:
 
-- [`clearscreen`](https://crates.io/crates/clearscreen) - Cross-platform screen clearing
-- [`colored`](https://crates.io/crates/colored) - Terminal text coloring
+- [`clearscreen`](https://crates.io/crates/clearscreen) - Cross-platform screen clearing functionality that works on Windows, macOS, and Linux
+- [`colored`](https://crates.io/crates/colored) - Terminal text coloring and styling for enhanced visual output
 
-Add these to your `Cargo.toml`:
+**Note:** If you're building from source, these dependencies will be automatically downloaded and compiled by Cargo. If you want to use these same crates in your own Rust project, add them to your `Cargo.toml`:
 
 ```toml
 [dependencies]
 clearscreen = "2.0"
 colored = "2.0"
 ```
+
+The `Cargo.lock` file ensures that all users build with the exact same dependency versions for consistency.
 
 ## 🏗️ Project Structure
 
