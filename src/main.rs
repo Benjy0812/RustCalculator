@@ -137,7 +137,7 @@ fn ask_again(prompt: &str) -> bool {
 /// - Displays the result with colored output
 /// - Allows multiple calculations in a single session
 fn main() {
-    println!("{}\n", "Welcome to Calculator!".bright_blue().bold());
+    println!("{}", "Welcome to Calculator!".bright_blue().bold());
     
     loop {
         // Keep asking for valid inputs and calculation until we get a result
