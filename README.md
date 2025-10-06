@@ -1,56 +1,126 @@
-# Rust CLI Calculator
+# 🧮 Rust Calculator
 
-A simple command-line calculator written in Rust that performs basic arithmetic operations: addition, subtraction, multiplication, and division.
+A beautiful, interactive command-line calculator built with Rust. Features colorful output, input validation, and support for basic arithmetic operations.
 
-## Features
+![Rust](https://img.shields.io/badge/rust-%23000000.svg?style=for-the-badge&logo=rust&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge)
 
-- Performs a single calculation per run
-- Supports the following operations:
-  - `add` – addition
-  - `subtract` – subtraction
-  - `multiply` – multiplication
-  - `divide` – division
-- Handles division by zero gracefully
-- Uses `f64` for higher numeric precision
+## ✨ Features
 
-## Usage
+- **Interactive CLI Interface** - User-friendly prompts guide you through each calculation
+- **Colorful Output** - Color-coded interface for better readability
+- **Input Validation** - Robust error handling ensures only valid numbers and operations are accepted
+- **Multiple Operations** - Supports addition, subtraction, multiplication, and division
+- **Division by Zero Protection** - Gracefully handles division by zero errors
+- **Session Continuity** - Perform multiple calculations without restarting the program
+- **Cross-Platform** - Works on Windows, macOS, and Linux
 
-1. Clone the repository or download the code.
-2. Build and run using `cargo`:
+## 🚀 Getting Started
 
-   ```bash
-   cargo run
-   ```
+### Prerequisites
 
-3. Enter the first number, second number, and operation when prompted:
+- Rust 1.70 or higher (install from [rustup.rs](https://rustup.rs/))
 
-   ```text
-   Enter first number: 10
+### Installation
 
-   Enter second number: 5
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/rust-calculator.git
+cd rust-calculator
+```
 
-   Enter operation (add, subtract, multiply, divide): divide
-   ```
+2. Build the project:
+```bash
+cargo build --release
+```
 
-4. The result will be displayed:
+3. Run the calculator:
+```bash
+cargo run --release
+```
 
-   ```text
-   Result: 2
-   ```
+## 📖 Usage
 
-## Notes
+When you start the calculator, you'll be prompted to:
 
-- Currently, the program performs **only one calculation per execution**.
-- A loop for continuous calculations will be **added in a future update**.
+1. Enter your first number
+2. Enter your second number
+3. Choose an operation
+4. View the result
+5. Decide whether to perform another calculation
 
-## Example
+### Supported Operations
 
-```text
-Enter first number: 12
+| Operation      | Input Options          |
+|----------------|------------------------|
+| Addition       | `add`, `+`, `a`       |
+| Subtraction    | `subtract`, `-`, `s`  |
+| Multiplication | `multiply`, `*`, `m`  |
+| Division       | `divide`, `/`, `d`    |
 
-Enter second number: 4
+### Example Session
+
+```
+Welcome to Calculator!
+
+Enter first number: 15
+
+Enter second number: 3
 
 Enter operation (add, subtract, multiply, divide): multiply
 
-Result: 48
+15 * 3 = 45
+
+Do you want to perform another calculation? (yes/no): yes
+
+Enter first number: 100
+
+Enter second number: 4
+
+Enter operation (add, subtract, multiply, divide): /
+
+100 / 4 = 25
+
+Do you want to perform another calculation? (yes/no): no
+
+Goodbye!
 ```
+
+## 🛠️ Dependencies
+
+This project uses the following crates:
+
+- [`clearscreen`](https://crates.io/crates/clearscreen) - Cross-platform screen clearing
+- [`colored`](https://crates.io/crates/colored) - Terminal text coloring
+
+Add these to your `Cargo.toml`:
+
+```toml
+[dependencies]
+clearscreen = "2.0"
+colored = "2.0"
+```
+
+## 🏗️ Project Structure
+
+```
+calculator/
+├── src/
+│   └── main.rs          # Main calculator implementation
+├── Cargo.toml           # Project dependencies
+├── Cargo.lock           # Dependency lock file
+└── README.md            # This file
+```
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ using Rust
+- Inspired by the need for a simple, elegant calculator with great UX
+
+---
+
+**Happy Calculating!** 🎉

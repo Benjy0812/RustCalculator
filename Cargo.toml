@@ -5,5 +5,4 @@ edition = "2021"
 
 [dependencies]
 clearscreen = "4.0.2"
-num-format = "0.4.4"
 colored = "3.0.0"
