@@ -33,12 +33,14 @@ A beautiful, interactive command-line calculator built with Rust. Features color
 #### Option 2: Build from Source
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/yourusername/rust-calculator.git
 cd rust-calculator
 ```
 
 2. Run the calculator:
+
 ```bash
 cargo run --release
 ```
@@ -64,7 +66,7 @@ When you start the calculator, you'll be prompted to:
 
 ### Example Session
 
-```
+```text
 Welcome to Calculator!
 
 Enter first number: 15
@@ -109,7 +111,7 @@ The `Cargo.lock` file ensures that all users build with the exact same dependenc
 
 ## 🏗️ Project Structure
 
-```
+```text
 calculator/
 ├── src/
 │   └── main.rs          # Main calculator implementation
