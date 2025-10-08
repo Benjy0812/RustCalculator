@@ -17,12 +17,16 @@ fn clear_screen() {
 /// Prompts the user to enter a number and validates the input.
 ///
 /// Continuously prompts until a valid floating-point number is provided.
+/// Invalid inputs display an error message and re-prompt the user.
 ///
 /// # Arguments
 /// * `prompt` - The message to display to the user
 ///
 /// # Returns
 /// A valid f64 number entered by the user
+///
+/// # Panics
+/// Panics if stdout cannot be flushed or stdin cannot be read.
 fn read_number(prompt: &str) -> f64 {
     loop {
         print!("{}", prompt.cyan());
@@ -42,14 +46,20 @@ fn read_number(prompt: &str) -> f64 {
 
 /// Prompts the user to select a mathematical operation.
 ///
-/// Validates that the input is one of: add, subtract, multiply, or divide.
-/// The input is case-insensitive and accepts both words and symbols.
+/// Validates that the input is one of the supported operations.
+/// The input is case-insensitive and accepts:
+/// - Full words: "add", "subtract", "multiply", "divide"
+/// - Symbols: "+", "-", "*", "/"
+/// - Single letters: "a", "s", "m", "d"
 ///
 /// # Arguments
 /// * `prompt` - The message to display to the user
 ///
 /// # Returns
-/// A string containing the operation symbol ("+", "-", "*", "/")
+/// A string containing the operation symbol ("+", "-", "*", or "/")
+///
+/// # Panics
+/// Panics if stdout cannot be flushed or stdin cannot be read.
 fn read_choice(prompt: &str) -> String {
     loop {
         print!("{}", prompt.cyan());
@@ -77,18 +87,22 @@ fn read_choice(prompt: &str) -> String {
 /// # Arguments
 /// * `a` - The first operand
 /// * `b` - The second operand
-/// * `choice` - The operation to perform ("add", "subtract", "multiply", or "divide")
+/// * `choice` - The operation symbol ("+", "-", "*", or "/")
 ///
 /// # Returns
 /// * `Some(f64)` - The result of the calculation if successful
 /// * `None` - If the operation cannot be performed (e.g., division by zero)
+///
+/// # Panics
+/// Panics if an invalid operation symbol is passed (this should never happen
+/// as `read_choice` only returns valid operators).
 fn calculate(a: f64, b: f64, choice: &str) -> Option<f64> {
     match choice {
         "+" => Some(a + b),
         "-" => Some(a - b),
         "*" => Some(a * b),
         "/" => {
-            if b == 0.0 {
+            if b.abs() < f64::EPSILON {
                 println!(
                     "{}",
                     "\nError: Division by zero! Let's try again.".red().bold()
@@ -98,16 +112,14 @@ fn calculate(a: f64, b: f64, choice: &str) -> Option<f64> {
                 Some(a / b)
             }
         }
-        _ => {
-            println!("{}", "Invalid operation".red());
-            None
-        }
+        _ => unreachable!("read_choice should only return valid operators"),
     }
 }
 
 /// Prompts the user to decide whether to perform another calculation.
 ///
 /// Accepts "yes"/"y" or "no"/"n" (case-insensitive).
+/// Invalid inputs display an error message and re-prompt the user.
 ///
 /// # Arguments
 /// * `prompt` - The message to display to the user
@@ -115,6 +127,9 @@ fn calculate(a: f64, b: f64, choice: &str) -> Option<f64> {
 /// # Returns
 /// * `true` - If the user wants to continue
 /// * `false` - If the user wants to exit
+///
+/// # Panics
+/// Panics if stdout cannot be flushed or stdin cannot be read.
 fn ask_again(prompt: &str) -> bool {
     loop {
         print!("{}", prompt.yellow());
@@ -135,11 +150,16 @@ fn ask_again(prompt: &str) -> bool {
 
 /// Main entry point for the calculator application.
 ///
-/// Provides an interactive command-line calculator that:
-/// - Accepts two numbers from the user
-/// - Performs basic arithmetic operations (add, subtract, multiply, divide)
-/// - Displays the result with colored output
+/// Provides an interactive command-line calculator with the following features:
+/// - Accepts two floating-point numbers from the user
+/// - Performs basic arithmetic operations: addition, subtraction, multiplication, division
+/// - Displays results with colored output for better readability
+/// - Handles division by zero gracefully with error messages
+/// - Clears the screen between calculations for a clean interface
 /// - Allows multiple calculations in a single session
+/// - Supports flexible operation input (words, symbols, or shortcuts)
+///
+/// The program continues running until the user chooses to exit.
 fn main() {
     println!("{}", "Welcome to Calculator!".bright_blue().bold());
 
@@ -147,7 +167,7 @@ fn main() {
         // Keep asking for valid inputs and calculation until we get a result
         let (a, b, choice, result) = loop {
             let a = read_number("\nEnter first number: ");
-            let choice = read_choice("\nEnter operation (add, subtract, multiply, divide): ");
+            let choice = read_choice("\nEnter operation (+, -, *, / or add, subtract, multiply, divide): ");
             let b = read_number("\nEnter second number: ");
 
             // Attempt calculation; retry if it fails (e.g., division by zero)
