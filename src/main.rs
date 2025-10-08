@@ -147,8 +147,8 @@ fn main() {
         // Keep asking for valid inputs and calculation until we get a result
         let (a, b, choice, result) = loop {
             let a = read_number("\nEnter first number: ");
-            let b = read_number("\nEnter second number: ");
             let choice = read_choice("\nEnter operation (add, subtract, multiply, divide): ");
+            let b = read_number("\nEnter second number: ");
 
             // Attempt calculation; retry if it fails (e.g., division by zero)
             if let Some(result) = calculate(a, b, &choice) {
