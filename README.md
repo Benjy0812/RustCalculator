@@ -132,3 +132,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 **Happy Calculating!** 🎉
+
+---
+
+You can reach me at: contact.benjy@pm.me. Feel free to contact for anything.
